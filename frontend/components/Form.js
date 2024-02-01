@@ -56,17 +56,35 @@ export default function Form() {
   }, [values.fullName, values.size])
 
   const handleChange = evt =>{
-    let {id, name, value, checked} = evt.target
-    value = id == '' ? name : value
-     if (checked) { setValues({...values, toppings: [...values.toppings, name]})}
-     setValues({...values, [id]: value})
-    
+    // let {id, name, value, checked, type} = evt.target
+    // value = type == 'checkbox' ? name : value
+    // if (checked) { setValues({...values, toppings: [...values.toppings, name]})}
+    //  setValues({...values, [id]: value})
+ 
+    // const target = evt.target
+    // const value = target.type === 'checkbox' ? target.checked : target.value
+    // const name = target.name
+    // setValues({...values, [name]: value})
+
+    const {id, value}= evt.target
+    setValues({...values, [id]: value})
     //debugger
     console.log(evt.target)
     yup.reach(formSchema, id).validate(value)
     .then(()=>setErrors({...errors, [id]: ''}))
     .catch((err)=>setErrors({...errors, [id]: err.errors[0]}))
   }
+
+  const handleCheckboxChange = evt =>{
+    const {name, checked} = evt.target
+    setValues({...values, toppings: checked ? [...values.toppings, name] : values.toppings.filter((topping)=>topping !== name)})
+    console.log(evt.target)
+    yup.reach(formSchema, name).validate(checked)
+    .then(()=>setErrors({...errors, [name]: ''}))
+    .catch((err)=>setErrors({...errors, [name]: err.errors[0]}))
+  }
+
+
 
   const handleSubmit = evt =>{
     evt.preventDefault()
@@ -95,7 +113,12 @@ export default function Form() {
       <div className="input-group">
         <div>
           <label htmlFor="fullName">Full Name</label><br />
-          <input value ={values.fullName} onChange={handleChange} placeholder="Type full name" id="fullName" type="text" />
+          <input value ={values.fullName} onChange={handleChange} 
+          placeholder="Type full name" 
+          id="fullName" 
+          type="text"
+          //name='fullName' 
+          />
         </div>
         {errors.fullName && <div className='error'>{errors.fullName}</div>}
       </div>
@@ -104,7 +127,7 @@ export default function Form() {
         <div>
           <label htmlFor="size">Size</label><br />
           <select 
-          
+          //name='size'
           value ={values.size} 
           onChange={handleChange} 
           id="size"
@@ -126,8 +149,8 @@ export default function Form() {
             name={topping.topping_id}
             type="checkbox"
             checked={values.toppings.topping_id}
-            onChange={handleChange}
-            value={topping.name}
+            onChange={handleCheckboxChange}
+            //value={topping.name}
           />
           {topping.text}<br />
         </label>

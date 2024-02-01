@@ -40,7 +40,7 @@ const getInitialValues=()=>({
 const getInitialErrors=()=>({
   size: '',
   fullName:'',
-  toppings: '',
+  //toppings: '',
 })
 
 export default function Form() {
@@ -58,8 +58,9 @@ export default function Form() {
   const handleChange = evt =>{
     let {id, name, value, checked} = evt.target
     value = id == '' ? name : value
-    if (checked) { setValues({...values, toppings: [...values.toppings, name]})}
-    setValues({...values, [id]: value})
+     if (checked) { setValues({...values, toppings: [...values.toppings, name]})}
+     setValues({...values, [id]: value})
+    
     //debugger
     console.log(evt.target)
     yup.reach(formSchema, id).validate(value)
@@ -119,8 +120,8 @@ export default function Form() {
 
       <div className="input-group">
         {/* 👇 Maybe you could generate the checkboxes dynamically */
-        toppings.map((topping, idx)=>{return (
-          <label key={idx}>
+        toppings.map((topping, topping_id)=> (
+          <label key={topping_id}>
           <input
             name={topping.topping_id}
             type="checkbox"
@@ -130,7 +131,7 @@ export default function Form() {
           />
           {topping.text}<br />
         </label>
-        )})
+        ))
         }
       
       </div>

@@ -16,10 +16,10 @@ describe('Sprint 7 Challenge Learner Tests', () => {
   */
 
     describe('unit tests for sum', ()=>{
-      it('should return "pass valid numbers" when both a and b are missing', ()=>{
+      it('should return "pass valid numbers" when a and b are missing', ()=>{
         expect(sum()).toBe('pass valid numbers')
       })
-      it('should return "pass valid numbers" when a or b are not integers or strings of integers', ()=>{
+      it('should return "pass valid numbers" when a or b are not numbers or strings of integers', ()=>{
         expect(sum(2, 'seven')).toBe('pass valid numbers')
       })
       it('should return a + b when both a and b are integers', ()=>{
@@ -84,7 +84,7 @@ function sum(a, b) {
   a = Number(a)
   b = Number(b)
   if (isNaN(a) || isNaN(b)) {
-    throw new Error('pass valid numbers')
+    return 'pass valid numbers'
   }
   return a + b
 }
